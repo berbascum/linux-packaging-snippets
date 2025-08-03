@@ -10,6 +10,12 @@ VARIANT = android
 # Kernel base version
 KERNEL_BASE_VERSION = 4.4-0
 
+# Kernel release extended
+# Adds extra information to KERNEL_RELEASE.
+# Requires the control-override-kernel-release-extended.mk in rules.
+# KERNEL_DEVELOPER_NAME = developer-name
+# KBUILD_DROIDIAN_VERSION = d0-rc0
+
 # The kernel cmdline to use
 KERNEL_BOOTIMAGE_CMDLINE = put-cmdline-here
 
