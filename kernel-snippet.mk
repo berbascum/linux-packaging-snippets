@@ -81,10 +81,6 @@ ifdef KERNEL_CONFIG_EXTRA_FRAGMENTS
 KERNEL_CONFIG_DEVICE_FRAGMENTS += $(patsubst %, $(KERNEL_SOURCES)/droidian/%, $(KERNEL_CONFIG_EXTRA_FRAGMENTS))
 endif
 
-ifneq ($(CLANG_CUSTOM), 1)
-DEB_TOOLCHAIN := clang-android-$(CLANG_VERSION), $(DEB_TOOLCHAIN)
-endif
-
 debian/control:
 	sed -e "s|@KERNEL_BASE_VERSION@|$(KERNEL_BASE_VERSION)|g" \
 		-e "s|@VARIANT@|$(VARIANT)|g" \
