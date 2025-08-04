@@ -16,4 +16,7 @@ override debian/control:
 		-e "s|@DEB_TOOLCHAIN@|$(DEB_TOOLCHAIN)|g" \
 		-e "s|@DEB_BUILD_ON@|$(DEB_BUILD_ON)|g" \
 		-e "s|@DEB_BUILD_FOR@|$(DEB_BUILD_FOR)|g" \
-	/usr/share/linux-packaging-snippets/control.in > debian/control
+	/usr/share/linux-packaging-snippets/control.in > debian/control \
+	&& sed \
+		-e 's/^KERNEL_RELEASE = $(KERNEL_BASE_VERSION)-$(DEVICE_VENDOR)-$(DEVICE_MODEL)/KERNEL_RELEASE = $(KERNEL_BASE_VERSION)-$(VARIANT)-$(KERNEL_DEVELOPER_NAME)-$(DEVICE_VENDOR)-$(DEVICE_MODEL)-$(KBUILD_DROIDIAN_VERSION)/g' \
+	/usr/share/linux-packaging-snippets/kernel-snippet.mk
