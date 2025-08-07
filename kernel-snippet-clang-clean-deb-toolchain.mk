@@ -10,6 +10,7 @@ ifneq ($(DEB_BUILD_ON),amd64)
 DEB_TOOLCHAIN_CLEANED := $(shell echo $(DEB_TOOLCHAIN) \
 	| tr ' ' '\n' \
 	| grep -v '\-4.9-' \
+	| grep -v '\clang-' \
 	| tr '\n' ' ')
 # Remove possible spaces/tabs from begin and end
 DEB_TOOLCHAIN_CLEANED := $(strip $(DEB_TOOLCHAIN_CLEANED))
