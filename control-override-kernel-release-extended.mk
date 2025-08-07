@@ -1,5 +1,13 @@
 # control override rule for kernel release extended info
 
+# To enable the snippet, just add in debian/rules below the kernel-snippet.mk include
+
+# ifdef KERNEL_DEVELOPER_NAME
+# include /usr/share/linux-packaging-snippets/control-override-kernel-release-extended.mk
+# endif
+
+# Read some notes in the kernel-info.mk.example
+
 #@HOST_ARCH=$$(uname -m); \
 #if [ "$$HOST_ARCH" = "aarch64" ]; then \
 #fi
