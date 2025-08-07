@@ -1,5 +1,7 @@
 # Clang toolchain configuration
 ifeq ($(BUILD_CC), clang)
+
+# Clean DEB_TOOLCHAIN for ?????????
 include /usr/share/linux-packaging-snippets/kernel-snippet-clang-clean-deb-toolchain.mk
 # When clang custom is not enabled, Droidian(amd64) or Debian(arm64)
 # toolchains will be used.
@@ -41,20 +43,21 @@ endif # clang DISTRO
 endif # CLANG_VERSION
 endif # BUILD_LLVM
 endif # CLANG_CUSTOM false
-# When CLANG_CUSTOM is enabled and manually downloaded, BUILD_PATH should be defined
-# If using auto-download, BUILD_PATH will be overriden
+
+# CLANG_CUSTOM enabled
 ifeq ($(CLANG_CUSTOM), 1)
-ifdef CLANG_CUSTOM_URL
+# TODO: Currently managed by the helper script
+# ifeq ($(DOWNLOAD_CLANG_CUSTOM), 1)
+# BUILD_PATH will be overriden
+# endif
 ifndef BUILD_PATH
 $(error BUILD_PATH should be DEFINED from the caller script, ex. kernel-info.mk)
-else
+endif # BUILD_PATH
 ifeq ($(shell test ! -d "$(BUILD_PATH)" && echo notexist),notexist)
 $(error Wrong BUILD_PATH. A valid path is required when CLANG_CUSTOM = 1)
 endif
-endif # BUILD_PATH
-endif # CLANG_CUSTOM_URL
-#BUILD_PATH := $(CLANG_CUSTOM_PATH)
-# Keep the original DEB_TOOLCHAIN for custom clang
-#DEB_TOOLCHAIN := $(DEB_TOOLCHAIN_CLEANED)
+# Clean DEB_TOOLCHAIN for clang custom
+include /usr/share/linux-packaging-snippets/kernel-snippet-clang-clean-deb-toolchain.mk
+DEB_TOOLCHAIN := $(DEB_TOOLCHAIN_CLEANED)
 endif # CLANG_CUSTOM true
 endif # BUILD_CC main
