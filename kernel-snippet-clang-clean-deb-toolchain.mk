@@ -12,8 +12,11 @@ DEB_TOOLCHAIN_CLEANED := $(shell echo $(DEB_TOOLCHAIN) \
 	| grep -v '\-4.9-' \
 	| grep -v '\clang-' \
 	| tr '\n' ' ')
+#
 # Remove possible spaces/tabs from begin and end
 DEB_TOOLCHAIN_CLEANED := $(strip $(DEB_TOOLCHAIN_CLEANED))
-# Ensure there is not a comma at the end
-DEB_TOOLCHAIN_CLEANED := $(shell echo "$(DEB_TOOLCHAIN_CLEANED)" | sed 's/,$$//g')
+# Ensure there are not commas at the begin/end
+DEB_TOOLCHAIN_CLEANED := $(shell echo $(DEB_TOOLCHAIN_CLEANED) | sed 's/^,//; s/,$$//')
+# Remove again possible spaces/tabs from begin and end
+DEB_TOOLCHAIN_CLEANED := $(strip $(DEB_TOOLCHAIN_CLEANED))
 endif
