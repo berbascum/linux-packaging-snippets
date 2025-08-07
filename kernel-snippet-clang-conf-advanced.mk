@@ -1,6 +1,10 @@
 # Clang toolchain configuration
-ifeq ($(BUILD_CC), clang)
 
+# To enable the snippet, just add in debian/rules below the kernel-snippet.mk include
+# include /usr/share/linux-packaging-snippets/kernel-snippet-clang-conf-advanced.mk
+# Read some notes in the kernel-info.mk.example
+
+ifeq ($(BUILD_CC), clang)
 # Clean DEB_TOOLCHAIN for ?????????
 include /usr/share/linux-packaging-snippets/kernel-snippet-clang-clean-deb-toolchain.mk
 # When clang custom is not enabled, Droidian(amd64) or Debian(arm64)
