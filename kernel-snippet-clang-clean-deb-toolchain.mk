@@ -1,8 +1,12 @@
-# Disable not needed toolchains when using clang
+# DEB_TOOLCHAIN checker
 
-# Clean gcc-4.9 packages from the kernel-info DEB_TOOLCHAIN
-# Required for non amd64 hosts since the packages are only available for this arch
+# ARCH exceptions
+# Some packages used in the Droidian kernel build process, are only available for the amd64 arch
+# This causes compilation crashes on other archs, like arm64
+# An example are the android gcc/binutils packages, so we will clean then for non amd64 hosts
 
+# Clean DEB_TOOLCHAIN only when not amd64 host
+ifneq ($(DEB_BUILD_ON),amd64)
 DEB_TOOLCHAIN_CLEANED := $(shell echo $(DEB_TOOLCHAIN) \
 	| tr ' ' '\n' \
 	| grep -v '\-4.9-' \
@@ -11,3 +15,4 @@ DEB_TOOLCHAIN_CLEANED := $(shell echo $(DEB_TOOLCHAIN) \
 DEB_TOOLCHAIN_CLEANED := $(strip $(DEB_TOOLCHAIN_CLEANED))
 # Ensure there is not a comma at the end
 DEB_TOOLCHAIN_CLEANED := $(shell echo "$(DEB_TOOLCHAIN_CLEANED)" | sed 's/,$$//g')
+endif
