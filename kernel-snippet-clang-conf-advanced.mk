@@ -4,52 +4,41 @@
 # include /usr/share/linux-packaging-snippets/kernel-snippet-clang-conf-advanced.mk
 # Read some notes in the kernel-info.mk.example
 
+# CLANG LLVM enabled
 ifeq ($(BUILD_CC), clang)
-# Clean DEB_TOOLCHAIN for ?????????
-include /usr/share/linux-packaging-snippets/kernel-snippet-clang-clean-deb-toolchain.mk
-# When clang custom is not enabled, Droidian(amd64) or Debian(arm64)
-# toolchains will be used.
-ifneq ($(CLANG_CUSTOM), 1)
 # Limit for now to LLVM builds. For older, a deeper analysis is required.
 ifeq ($(BUILD_LLVM), 1)
+
+# CLANG_CUSTOM not enabled
+# When clang custom is not enabled, Droidian(amd64) or Debian(arm64)
+# prebuilts will be used.
+ifneq ($(CLANG_CUSTOM), 1)
+$(info CLANG_CUSTOM disabled)
 # CLANG_VERSION is required
-ifdef CLANG_VERSION
-include /usr/share/linux-packaging-snippets/kernel-snippet-clang-versions.mk
-# Force clang from debian for the specified archs
+ifndef CLANG_VERSION
+$(error CLANG_VERSION is required in kernel.info.mk)
+endif
+
 ifeq ($(DEB_BUILD_ON),arm64)
-	CLANG_FROM_DISTRO := debian
-# Next else can be used to set a default distro for amd64 hosts.
-# Currently amd64 not is not using any distro config
-# to not alter the current compatibility
-#else ifeq ($(DEB_BUILD_ON),amd64)
-#	ifndef CLANG_FROM_DISTRO
-#		CLANG_FROM_DISTRO := droidian
-#	endif
-endif
-ifeq ($(CLANG_FROM_DISTRO), debian)
-ifneq ($(findstring $(CLANG_VERSION_INT), $(CLANG_VERSIONS_DEBIAN)), $(CLANG_VERSION_INT))
-	$(error Specified clang version not supported. Supported versions: $(CLANG_VERSIONS_DEBIAN))
-endif
-	DEB_TOOLCHAIN := \
-		clang-$(CLANG_VERSION_INT), \
-		lld-$(CLANG_VERSION_INT), \
-		llvm-$(CLANG_VERSION_INT)-dev, \
-		$(DEB_TOOLCHAIN_CLEANED)
-	BUILD_PATH := /usr/lib/llvm-$(CLANG_VERSION_INT)/bin:$(BUILD_PATH)
-# Next else can be enabled for droidian clang specific configs
-#else ifeq ($(CLANG_FROM_DISTRO), droidian)
-else
-	DEB_TOOLCHAIN := \
-		clang-android-$(CLANG_VERSION_STR), \
-		$(DEB_TOOLCHAIN_CLEANED)
-	BUILD_PATH := /usr/lib/llvm-android-$(CLANG_VERSION_STR)/bin:$(BUILD_PATH)
-endif # clang DISTRO
-endif # CLANG_VERSION
-endif # BUILD_LLVM
-endif # CLANG_CUSTOM false
+CLANG_OS_DISTRIB := debian
+include /usr/share/linux-packaging-snippets/kernel-snippet-clang-versions.mk
+# Clean DEB_TOOLCHAIN
+include /usr/share/linux-packaging-snippets/kernel-snippet-clang-clean-deb-toolchain.mk
+# TODO: What to do bith the BUILD_PATH
+BUILD_PATH := /usr/lib/llvm-$(CLANG_VERSION_INT)/bin:$(BUILD_PATH)
+else ifeq ($(DEB_BUILD_ON),amd64)
+CLANG_OS_DISTRIB := droidian
+include /usr/share/linux-packaging-snippets/kernel-snippet-clang-versions.mk
+# Clean DEB_TOOLCHAIN
+include /usr/share/linux-packaging-snippets/kernel-snippet-clang-clean-deb-toolchain.mk
+$(info Configuring BUILD_PATH for amd64...)
+# TODO: PULIR PATH SI HI HA COSES DEFINIDES al kernel-info
+BUILD_PATH := /usr/lib/llvm-android-$(CLANG_VERSION_STR)/bin:$(BUILD_PATH)
+endif # ARCH
 
 # CLANG_CUSTOM enabled
-ifeq ($(CLANG_CUSTOM), 1)
+else ifeq ($(CLANG_CUSTOM), 1)
+$(info CLANG_CUSTOM enabled)
 # TODO: Currently managed by the helper script
 # ifeq ($(DOWNLOAD_CLANG_CUSTOM), 1)
 # BUILD_PATH will be overriden
@@ -62,6 +51,7 @@ $(error Wrong BUILD_PATH. A valid path is required when CLANG_CUSTOM = 1)
 endif
 # Clean DEB_TOOLCHAIN for clang custom
 include /usr/share/linux-packaging-snippets/kernel-snippet-clang-clean-deb-toolchain.mk
-DEB_TOOLCHAIN := $(DEB_TOOLCHAIN_CLEANED)
-endif # CLANG_CUSTOM true
+#DEB_TOOLCHAIN := $(DEB_TOOLCHAIN_CLEANED)
+endif # CLANG_CUSTOM
+endif # BUILD_LLVM
 endif # BUILD_CC main
