@@ -32,6 +32,8 @@ DEB_TOOLCHAIN_CLEANED := $(shell echo $(DEB_TOOLCHAIN) \
 	| grep -v '\clang-' \
 	| tr '\n' ' ')
 #
+else
+$(error clang custom for $(DEB_BUILD_ON) hosts not implemented)
 endif # ARCH
 else ifneq ($(CLANG_CUSTOM),1)
 # Clean DEB_TOOLCHAIN when arm64 host
