@@ -218,20 +218,81 @@ BUILD_LLVM = 0
 # Set to 1 to skip modules packaging if CONFIG_MODULES is disabled in defconfig 
 BUILD_SKIP_MODULES = 0
 
-# Set clang version
-CLANG_VERSION = 6.0-4691093
-# Set to 1 to use a manually installed toolchain
-# Remember to update the path in BUILD_PATH
-CLANG_CUSTOM = 0
+# Clang Droidian prebuilts for amd64 hosts
+  #  6.0 4691093     9.0 r353983c    10.0 r370808
+  # 12.0 r416183b   14.0 r450784d
 
-# Extra paths to prepend to the PATH variable. You'll probably want
-# to specify the clang path here (the default).
-BUILD_PATH = /usr/lib/llvm-android-$(CLANG_VERSION)/bin
+# Clang Debian prebuilts for arm64 (gnu, not android)
+# Requires CLANG_VERSION and should be an int
+# No still finished, coming soon,
+
+# CLANG_VERSION will be used for Droidian/Debian prebuilts showed above
+# Must be in integer format
+CLANG_VERSION = 10
+
+# BUILD_PATH:
+# Extra paths to prepend to the PATH variable.
+# This var is required by the official Droidian toolchains
+# Sample path for Droidian clang 10
+# BUILD_PATH = /usr/lib/llvm-android-10.0-r370808/bin
+# When using clang and the clang-conf-advanced snippet,
+# the clang path will be automatically configured
+# Anyway, any other paths configured in BUILD_PATH will be appended to PATH after the clang path
+BUILD_PATH = /path/to/custom/toolchain/bin
 
 # Extra packages to add to the Build-Depends section. Mainline builds
 # can have this section empty, unless cross-building.
 # The default is enough to install the Android toolchain, including clang.
-DEB_TOOLCHAIN = linux-initramfs-halium-generic:arm64, binutils-aarch64-linux-gnu, gcc-4.9-aarch64-linux-android, g++-4.9-aarch64-linux-android, libgcc-4.9-dev-aarch64-linux-android-cross
+# When using clang and the clang-conf-advanced snippet,
+# no clang packages are required here.
+# Anyway, the snippet will clean the packages list.
+# Also will be used by the clang-custom feature.
+DEB_TOOLCHAIN = device-tree-compiler, linux-initramfs-halium-generic:arm64, binutils-aarch64-linux-gnu, gcc-4.9-aarch64-linux-android, g++-4.9-aarch64-linux-android, libgcc-4.9-dev-aarch64-linux-android-cross
+
+# CLANG_CUSTOM:
+# Set to 1 to use a not Droidian official clang prebuilt
+# For using a manually installed prebuilt,
+# just enable CLANG_CUSTOM and configure the BUILD_PATH
+# REQS:
+  # BUILD_LLVM = 1
+  # BUILD_PATH = /any/clang/valid/path
+CLANG_CUSTOM = 0
+
+# BUILD_PATH_CLANG_CUSTOM:
+# This var is required here, but is autoconfigured by the
+# clang-conf-advanced snippet
+BUILD_PATH_CLANG_CUSTOM = /some/path/bin
+
+# DOWNLOAD_CLANG_CUSTOM
+# REQS:
+  # CLANG_CUSTOM = 1
+# TODO A custom url is not supported yet
+# Additionallya there are two predefined repos for each arm64 and amd64 archs
+# The repo is autoselected based on the host arch detected,
+# no need any configuration
+# CLANG_CUSTOM_REVISION must be defined
+# CLANG_VERSION is not used
+DOWNLOAD_CLANG_CUSTOM = 0
+
+# Clang berbascum-repo prebuilts for amd64 hosts
+# The branches starting with clang- were cleaned keepeng only
+# the relevant revision:
+  # clang-9-r353983c-a11-x86
+  # clang-10-r377782d-a11-x86
+  # clang-11-r383902b-a11-x86
+  # clang-12-r416183b-a12-x86
+  # clang-14-r450784e-a14-x86
+
+# Clang tomxi1997-repo prebuilts for arm64 hosts
+  #  9.0.8 a11 r365631c
+  # 11.0.0 a11 r383902
+  # 11.0.4 a12 r399163
+
+# CLANG_CUSTOM_REVISION
+CLANG_CUSTOM_REVISION = r383902
+# CLANG_CUSTOM_ANDROID requied by amd64-berb-clang-custom
+CLANG_CUSTOM_VERSION = 10
+CLANG_CUSTOM_ANDROID = 11
 
 # Where we're building on
 # Comment DEB_BUILD_ON to enable host arch autodetection.
