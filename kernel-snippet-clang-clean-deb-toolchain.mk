@@ -60,6 +60,8 @@ DEB_TOOLCHAIN_CLEANED := \
 	clang-android-$(CLANG_VERSION_STR), \
 	$(DEB_TOOLCHAIN_CLEANED)
 $(info DEB_TOOLCHAIN_CLEANED after step 2: $(DEB_TOOLCHAIN_CLEANED))
+else
+$(warning clang for $(DEB_BUILD_ON) hosts is not implemented)
 endif # ARCH
 endif # CLANG_CUSTOM
 #
