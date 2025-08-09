@@ -47,7 +47,7 @@ $(info CLANG_CUSTOM enabled)
 # BUILD_PATH_CLANG_CUSTOM must be manually defined in kernel-snippet.mk
 ifeq ($(DOWNLOAD_CLANG_CUSTOM), 1)
 ifndef BUILD_PATH_CLANG_CUSTOM
-$(error BUILD_PATH_CLANG_CUSTOM not defined. Prepend it to the releng-build-package command)
+$(error BUILD_PATH_CLANG_CUSTOM not defined. Unknown reason)
 endif # BUILD_PATH_CLANG_CUSTOM
 else # DOWNLOAD_CLANG_CUSTOM
 ifndef BUILD_PATH_CLANG_CUSTOM
