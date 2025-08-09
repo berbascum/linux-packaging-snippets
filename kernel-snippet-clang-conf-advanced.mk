@@ -20,6 +20,7 @@ $(error CLANG_VERSION is required in kernel.info.mk)
 endif
 #
 ifeq ($(DEB_BUILD_ON),arm64)
+$(error Native distro clang for arm64 is not supported yet. Please use CLANG_CUSTOM)
 CLANG_OS_DISTRIB := debian
 include /usr/share/linux-packaging-snippets/kernel-snippet-clang-versions.mk
 # Clean DEB_TOOLCHAIN
