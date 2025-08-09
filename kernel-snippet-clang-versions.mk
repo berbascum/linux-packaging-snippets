@@ -1,12 +1,10 @@
 # Clang version configuration snippet
 #
-# For CLANG_CUSTOM not enabled and amd64/arm64 hosts:
+# When CLANG_CUSTOM is not enabled and the host is amd64/arm64
 # Set CLANG_VERSION to a supported version using an int.
 
-# For CLANG_CUSTOM enabled and amd64/arm64 hosts:
-# For use the predefined repos; set CLANG_CUSTOM_REVISION to
-# a supported revision code.
-# More info in the kernel-info.mk.example
+# CLANG_CUSTOM does not use this snippet, Currently is managed by a shell script
+# Search for CLANG_CUSTOM_REVISION kernel-info.mk.example
 
 $(info Loading clang-versions-$(CLANG_OS_DISTRIB) snippet for $(DEB_BUILD_ON) and CLANG_CUSTOM = $(CLANG_CUSTOM))
 
